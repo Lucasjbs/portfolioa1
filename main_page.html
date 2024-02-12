@@ -1,0 +1,23 @@
+<p style="font-size: 1.42rem;">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus
+    diam.
+</p>
+<p style="font-size: 1.42rem;">
+    Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.
+</p>
+
+<h2>Enter a name: </h2>
+
+<div class="mb-4" id="nameForm">
+    <form style="color: white;" method="POST" action="" id="verifyForm">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" autocomplete="given-name" name="name" required>
+        <button type="button" onclick="storeName()">Store Name</button>
+    </form>
+</div>
+
+<h2>Names Stored in Database</h2>
+
+<ul id="nameList"></ul>
+
+<script src="/crud_manager.js" defer></script>

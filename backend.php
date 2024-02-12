@@ -1,4 +1,10 @@
 <?php
+require 'autoload.php';
+
+use Portifolio\Interaction\Action\Entrypoint;
+
+$test = new Entrypoint;
+
 // Database connection parameters
 $servername = "localhost";
 $username = "root";

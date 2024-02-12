@@ -1,0 +1,50 @@
+.main-button {
+
+    background-color: hsla(0, 0%, 100%, .15);
+    transition: all .24s ease-in-out;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+.main-button:hover {
+    color: white;
+    text-decoration: none;
+    opacity: .8;
+}
+
+body {
+    height: 100vh;
+    /* Set the body to full height of the viewport */
+    display: flex;
+    align-items: center;
+    /* Center content vertically */
+    background-color: #100321;
+}
+
+.container {
+    width: 100%;
+}
+
+h2,
+p,
+ul,
+li {
+    color: white;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        text-align: center;
+        align-items: start;
+    }
+
+    .container {
+        margin-top: 120px;
+    }
+}
