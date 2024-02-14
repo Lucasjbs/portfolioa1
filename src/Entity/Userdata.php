@@ -34,6 +34,8 @@ class Userdata extends Connection
         $isMarried = (int) $isMarried;
         $sql = "INSERT INTO $this->tablename (name, age, is_married, phone) VALUES ('$name', $age, $isMarried, '$phone')";
 
+        if(!$age) $sql = "INSERT INTO $this->tablename (name, is_married, phone) VALUES ('$name', $isMarried, '$phone')";
+
         try {
             $this->conn->query($sql);
         } catch (Exception $e) {
@@ -47,6 +49,8 @@ class Userdata extends Connection
         $isMarried = (int) $isMarried;
         $sql = "UPDATE $this->tablename SET name = '$name', age = $age, is_married = $isMarried, phone = '$phone' WHERE id = $id";
 
+        if(!$age) $sql = "UPDATE $this->tablename SET name = '$name', is_married = $isMarried, phone = '$phone' WHERE id = $id";
+        
         try {
             $this->conn->query($sql);
         } catch (Exception $e) {

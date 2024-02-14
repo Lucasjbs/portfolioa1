@@ -3,28 +3,33 @@
 namespace Portifolio\Interaction\Action;
 
 use Portifolio\Interaction\Model\User;
+use Portifolio\Interaction\Validation\UserValidation;
 
 class UserEditAction
 {
+    private int $id;
     private Request $request;
     private User $user;
 
-    function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
-
-    function __invoke(
+    function __construct(
+        Request $request,
         int $id,
-        string $newUserName,
+        string $name,
         ?int $age,
         bool $isMarried,
         string $phone
     ) {
-        $name = htmlspecialchars(trim($newUserName));
-
         $this->user = new User($name, $age, $isMarried, $phone);
-        $this->user->editUserData($id);
+        $this->request = $request;
+        $this->id = $id;
+
+        $validator = new UserValidation($this->user, $this->request, $id);
+        $validator->validate();
+    }
+
+    function __invoke()
+    {
+        $this->user->editUserData($this->id);
 
         return "Status: success";
     }

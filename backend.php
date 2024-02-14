@@ -21,7 +21,7 @@ function UserDataFrontEndList(array $result): void
 
         $name = htmlspecialchars($name);
         $maritalStatus = 'Single';
-        if($isMarried == 1) $maritalStatus = 'Married';
+        if ($isMarried == 1) $maritalStatus = 'Married';
 
         $userData = "$name, $age, $maritalStatus, $phone";
 
@@ -46,29 +46,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'store') {
     $newRequest = new Request('POST', 'store', true);
-    $getUsersList = new UserCreateAction($newRequest);
-    $getUsersList(
+    $getUsersList = new UserCreateAction(
+        $newRequest,
         $_POST['name'],
-        $_POST['age'],
+        $_POST['age'] ? $_POST['age'] : null,
         $_POST['isMarried'],
         $_POST['phone']
     );
+    $getUsersList();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edit') {
     $newRequest = new Request('POST', 'edit', true);
-    $getUsersList = new UserEditAction($newRequest);
-    $getUsersList(
+    $getUsersList = new UserEditAction(
+        $newRequest,
         $_POST['id'],
         $_POST['name'],
         $_POST['age'],
         $_POST['isMarried'],
         $_POST['phone']
     );
+    $getUsersList();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
     $newRequest = new Request('POST', 'delete', true);
-    $getUsersList = new UserDeleteAction($newRequest);
-    $getUsersList($_POST['id']);
+    $getUsersList = new UserDeleteAction($newRequest, $_POST['id']);
+    $getUsersList();
 }

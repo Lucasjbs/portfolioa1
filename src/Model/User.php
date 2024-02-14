@@ -56,4 +56,19 @@ class User
     {
         $this->userEntity->deleteUser($id);
     }
+
+    public function getUserName() : string 
+    {
+        return $this->name;    
+    }
+
+    public function getUserAge() : ?int 
+    {
+        return $this->age;    
+    }
+
+    public function getUserPhone() : string 
+    {
+        return $this->phone;    
+    }
 }

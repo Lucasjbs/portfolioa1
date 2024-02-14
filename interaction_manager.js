@@ -13,7 +13,7 @@ $(document).ready(function () {
             success: function (response) {
                 $('#mainContent').html(response);
                 document.getElementById("clickVerification").remove();
-                id = setInterval(updateContent, 2000);
+                id = setInterval(updateContent, 1000);
             },
             error: function (xhr, status, error) {
                 console.error(error);
