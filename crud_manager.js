@@ -59,9 +59,9 @@ function editUser(id, currentName, currentAge, maritalStatus, currentPhone) {
             "action": "edit",
             "id": id,
             "name": encodeURIComponent(newName),
-            "age": encodeURIComponent(newAge),
-            "isMarried": encodeURIComponent(newMaritalStatus),
-            "phone": encodeURIComponent(newPhone),
+            "age": newAge,
+            "isMarried": newMaritalStatus,
+            "phone": newPhone,
         };
 
         ajaxPostRequest(requestData);
