@@ -10,23 +10,30 @@ use Portifolio\Interaction\Action\UserGetListAction;
 // Should move this to another file later
 function UserDataFrontEndList(array $result): void
 {
-    $names = '<ul>';
+    $userList = '<ul>';
 
     foreach ($result as $value) {
         $id = $value['id'];
         $name = $value['name'];
+        $isMarried = $value['is_married'];
+        $age = $value['age'];
+        $phone = $value['phone'];
 
         $name = htmlspecialchars($name);
+        $maritalStatus = 'Single';
+        if($isMarried == 1) $maritalStatus = 'Married';
 
-        $names .= '<li>' . $name . '
+        $userData = "$name, $age, $maritalStatus, $phone";
+
+        $userList .= '<li>' . $userData . '
                 <span class="edit-delete-buttons">
-                    <button onclick="editName(' . $id . ', \'' . $name . '\')">Edit</button>
-                    <button onclick="deleteName(' . $id . ')">Delete</button>
+                    <button onclick="editUser(' . $id . ', \'' . $name . '\', ' . $age . ', ' . $isMarried . ', \'' . $phone . '\')">Edit</button>
+                    <button onclick="deleteUser(' . $id . ')">Delete</button>
                 </span>
             </li>';
     }
-    $names .= '</ul>';
-    echo $names;
+    $userList .= '</ul>';
+    echo $userList;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
@@ -40,13 +47,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'store') {
     $newRequest = new Request('POST', 'store', true);
     $getUsersList = new UserCreateAction($newRequest);
-    $getUsersList($_POST['name']);
+    $getUsersList(
+        $_POST['name'],
+        $_POST['age'],
+        $_POST['isMarried'],
+        $_POST['phone']
+    );
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edit') {
     $newRequest = new Request('POST', 'edit', true);
     $getUsersList = new UserEditAction($newRequest);
-    $getUsersList($_POST['id'], $_POST['name']);
+    $getUsersList(
+        $_POST['id'],
+        $_POST['name'],
+        $_POST['age'],
+        $_POST['isMarried'],
+        $_POST['phone']
+    );
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {

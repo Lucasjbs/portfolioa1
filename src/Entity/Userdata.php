@@ -2,7 +2,9 @@
 
 namespace Portifolio\Interaction\Entity;
 
+use Exception;
 use Portifolio\Interaction\Action\Request;
+use Throwable;
 
 class Userdata extends Connection
 {
@@ -15,27 +17,41 @@ class Userdata extends Connection
 
     public function getAllUsers(): array
     {
-        //try
-        $result = $this->conn->query("SELECT * FROM $this->tablename");
-        $list = $result->fetch_all(MYSQLI_ASSOC);
+        $sql = "SELECT * FROM $this->tablename";
+
+        try {
+            $result = $this->conn->query($sql);
+            $list = $result->fetch_all(MYSQLI_ASSOC);
+        } catch (Exception $e) {
+            $exception = $e->getMessage();
+            return [];
+        }
         return $list;
     }
 
-    public function createNewUser(string $name): string
+    public function createNewUser(string $name, ?int $age, bool $isMarried, string $phone): string
     {
-        $sql = "INSERT INTO $this->tablename (name) VALUES ('$name')";
+        $isMarried = (int) $isMarried;
+        $sql = "INSERT INTO $this->tablename (name, age, is_married, phone) VALUES ('$name', $age, $isMarried, '$phone')";
 
-        //try
-        $this->conn->query($sql);
+        try {
+            $this->conn->query($sql);
+        } catch (Exception $e) {
+            $exception = $e->getMessage();
+        }
         return "Status: success";
     }
 
-    public function editUserData(int $id, string $name): string
+    public function editUserData(int $id, string $name, ?int $age, bool $isMarried, string $phone): string
     {
-        $sql = "UPDATE $this->tablename SET name = '$name' WHERE id = $id";
+        $isMarried = (int) $isMarried;
+        $sql = "UPDATE $this->tablename SET name = '$name', age = $age, is_married = $isMarried, phone = '$phone' WHERE id = $id";
 
-        //try
-        $this->conn->query($sql);
+        try {
+            $this->conn->query($sql);
+        } catch (Exception $e) {
+            $exception = $e->getMessage();
+        }
         return "Status: success";
     }
 
@@ -43,8 +59,11 @@ class Userdata extends Connection
     {
         $sql = "DELETE FROM userdata WHERE id = $id";
 
-        //try
-        $this->conn->query($sql);
+        try {
+            $this->conn->query($sql);
+        } catch (Exception $e) {
+            $exception = $e->getMessage();
+        }
         return "Status: success";
     }
 }

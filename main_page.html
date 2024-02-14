@@ -1,23 +1,36 @@
-<p style="font-size: 1.42rem;">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus
-    diam.
-</p>
-<p style="font-size: 1.42rem;">
-    Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.
-</p>
+<div class="mb-4">
+    <p style="font-size: 1.42rem;">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante
+        dapibus
+        diam.
+    </p>
+    <p style="font-size: 1.42rem;">
+        Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.
+    </p>
+</div>
 
-<h2>Enter a name: </h2>
+<h2>Enter a new user: </h2>
 
-<div class="mb-4" id="nameForm">
-    <form style="color: white;" method="POST" action="" id="storeNameForm">
+<div class="mb-4" id="userForm">
+    <form style="color: white;" method="POST" action="" id="storeUserForm">
         <label for="nameInput">Name:</label>
         <input type="text" id="nameInput" autocomplete="given-name" name="name" required>
-        <button type="button" onclick="storeName()">Store Name</button>
+        <label for="nameInput">Age:</label>
+        <input type="number" id="ageInput" autocomplete="on" name="age" required>
+        <label for="maritalStatus">Marital Status:</label>
+        <select id="maritalStatus" name="maritalStatus">
+            <option value="0">Single</option>
+            <option value="1">Married</option>
+        </select>
+        <label for="phoneInput">Phone Number:</label>
+        <input type="text" id="phoneInput" autocomplete="on" name="phoneInput" required>
+
+        <button type="button" onclick="storeUserData()">Create User</button>
     </form>
 </div>
 
-<h2>Names Stored in Database</h2>
+<h2>Users Stored in Database</h2>
 
-<ul id="nameList"></ul>
+<ul id="userList"></ul>
 
 <script src="/crud_manager.js" defer></script>

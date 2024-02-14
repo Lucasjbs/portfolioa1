@@ -5,7 +5,7 @@ function ajaxPostRequest(requestData) {
         async: true,
         data: requestData,
         success: function (response) {
-            fetchNames();
+            fetchData();
         },
         error: function (xhr, status, error) {
             console.error(error);
@@ -13,7 +13,7 @@ function ajaxPostRequest(requestData) {
     });
 }
 
-function fetchNames() {
+function fetchData() {
     var requestData = { "action": "fetch" };
 
     $.ajax({
@@ -22,7 +22,7 @@ function fetchNames() {
         async: true,
         data: requestData,
         success: function (response) {
-            $('#nameList').html(response);
+            $('#userList').html(response);
         },
         error: function (xhr, status, error) {
             console.error(error);
@@ -30,23 +30,45 @@ function fetchNames() {
     });
 }
 
-fetchNames();
+fetchData();
 
-function storeName() {
+function storeUserData() {
     var nameInput = document.getElementById("nameInput").value;
-    var requestData = { "action": "store", "name": encodeURIComponent(nameInput) };
+    var ageInput = document.getElementById("ageInput").value;
+    var isMarried = document.getElementById("maritalStatus").value;
+    var phoneInput = document.getElementById("phoneInput").value;
+    var requestData = {
+        "action": "store",
+        "name": encodeURIComponent(nameInput),
+        "age": ageInput,
+        "isMarried": isMarried,
+        "phone": phoneInput,
+    };
 
     ajaxPostRequest(requestData);
 }
 
-function editName(id, currentName) {
-    var newName = prompt("Edit name:", currentName);
-    var requestData = { "action": "edit", "id": id, "name": encodeURIComponent(newName) };
+function editUser(id, currentName, currentAge, maritalStatus, currentPhone) {
+    var confirmEdit = confirm("Are you sure you want to edit this user?");
+    if (confirmEdit) {
+        var newName = prompt("Edit name:", currentName);
+        var newAge = prompt("Edit age:", currentAge);
+        var newMaritalStatus = prompt("Edit Marital Status:", maritalStatus);
+        var newPhone = prompt("Edit phone:", currentPhone);
+        var requestData = {
+            "action": "edit",
+            "id": id,
+            "name": encodeURIComponent(newName),
+            "age": encodeURIComponent(newAge),
+            "isMarried": encodeURIComponent(newMaritalStatus),
+            "phone": encodeURIComponent(newPhone),
+        };
 
-    ajaxPostRequest(requestData);
+        ajaxPostRequest(requestData);
+    }
 }
 
-function deleteName(id) {
+function deleteUser(id) {
     var confirmDelete = confirm("Are you sure you want to delete this name?");
 
     if (confirmDelete) {

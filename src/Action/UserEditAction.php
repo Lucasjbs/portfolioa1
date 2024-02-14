@@ -14,11 +14,16 @@ class UserEditAction
         $this->request = $request;
     }
 
-    function __invoke(int $id, string $newUserName)
-    {
+    function __invoke(
+        int $id,
+        string $newUserName,
+        ?int $age,
+        bool $isMarried,
+        string $phone
+    ) {
         $name = htmlspecialchars(trim($newUserName));
 
-        $this->user = new User($name);
+        $this->user = new User($name, $age, $isMarried, $phone);
         $this->user->editUserData($id);
 
         return "Status: success";
