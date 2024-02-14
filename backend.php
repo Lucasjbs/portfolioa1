@@ -1,68 +1,56 @@
 <?php
 require 'autoload.php';
 
-use Portifolio\Interaction\Action\Entrypoint;
+use Portifolio\Interaction\Action\Request;
+use Portifolio\Interaction\Action\UserCreateAction;
+use Portifolio\Interaction\Action\UserDeleteAction;
+use Portifolio\Interaction\Action\UserEditAction;
+use Portifolio\Interaction\Action\UserGetListAction;
 
-$test = new Entrypoint;
+// Should move this to another file later
+function UserDataFrontEndList(array $result): void
+{
+    $names = '<ul>';
 
-// Database connection parameters
-$servername = "localhost";
-$username = "root";
-$password = "admin";
-$database = "portifolioa1";
-$port = 3306;
+    foreach ($result as $value) {
+        $id = $value['id'];
+        $name = $value['name'];
 
-// Create a connection to the MySQL database
-$conn = new mysqli($servername, $username, $password, $database, $port);
+        $name = htmlspecialchars($name);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-// Handle various actions based on the AJAX request
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($_POST['action'] === 'store') {
-        // Store the name in the database
-        $name = $_POST['name'];
-        $name = htmlspecialchars(trim($name));
-        echo "Success";
-
-        try {
-            $sql = "INSERT INTO userdata (name) VALUES ('$name')";
-            $conn->query($sql);
-            echo "Success";
-        } catch (Exception $e) {
-            echo "Hello";
-        }
-    } elseif ($_POST['action'] === 'edit') {
-    } elseif ($_POST['action'] === 'delete') {
-        $id = $_POST['id'];
-
-        try {
-            $conn->query("DELETE FROM userdata WHERE id = $id");
-            echo "Name deleted successfully";
-        } catch (Exception $e) {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if ($_GET['action'] === 'fetch') {
-        // Fetch names from the database
-        $result = $conn->query('SELECT * FROM userdata');
-        $names = '<ul>';
-        while ($row = $result->fetch_assoc()) {
-            $id = $row['id'];
-            $name = htmlspecialchars($row['name']);
-
-            $names .= '<li>' . $name . '
+        $names .= '<li>' . $name . '
                 <span class="edit-delete-buttons">
                     <button onclick="editName(' . $id . ', \'' . $name . '\')">Edit</button>
                     <button onclick="deleteName(' . $id . ')">Delete</button>
                 </span>
             </li>';
-        }
-        $names .= '</ul>';
-        echo $names;
     }
+    $names .= '</ul>';
+    echo $names;
 }
 
-$conn->close();
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetch') {
+    $newRequest = new Request('GET', 'fetch', true);
+    $getUsersList = new UserGetListAction($newRequest);
+    $result = $getUsersList();
+
+    UserDataFrontEndList($result);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'store') {
+    $newRequest = new Request('POST', 'store', true);
+    $getUsersList = new UserCreateAction($newRequest);
+    $getUsersList($_POST['name']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edit') {
+    $newRequest = new Request('POST', 'edit', true);
+    $getUsersList = new UserEditAction($newRequest);
+    $getUsersList($_POST['id'], $_POST['name']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
+    $newRequest = new Request('POST', 'delete', true);
+    $getUsersList = new UserDeleteAction($newRequest);
+    $getUsersList($_POST['id']);
+}
