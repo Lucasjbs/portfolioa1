@@ -1,5 +1,6 @@
 var counter = 0;
 var id = 0;
+var success = false;
 
 $(document).ready(function () {
     $('#verifyForm').submit(function (event) {
@@ -24,16 +25,24 @@ $(document).ready(function () {
 function updateContent() {
     var requestData = { "attempts": counter };
 
-    $.ajax({
-        url: 'fetch_updated_content.php',
-        data: requestData,
-        success: function (response) {
-            $('#mainContent').html(response);
-        },
-        error: function (xhr, status, error) {
-            console.error(error);
-        }
-    });
+    if (!success) {
+        $.ajax({
+            url: 'fetch_updated_content.php',
+            data: requestData,
+            success: function (response) {
+                if (response.includes("Verification Failed") || response.trim() === "") {
+                    success = false;
+                }
+                else {
+                    success = true;
+                }
+                $('#mainContent').html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
 
     if (counter >= 3) {
         clearInterval(id);
