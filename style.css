@@ -48,3 +48,14 @@ li {
         margin-top: 120px;
     }
 }
+
+@media only screen and (max-width: 900px) {
+    body {
+        text-align: center;
+        align-items: start;
+    }
+
+    .container {
+        margin-top: 120px;
+    }
+}
